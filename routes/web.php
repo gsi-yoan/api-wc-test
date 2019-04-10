@@ -57,7 +57,7 @@ $router->group(['prefix' => '/drift'], function () use ($router) {
 
             if ($res->getStatusCode() == 200) { // 200 OK
                 $response_data = $res->getBody()->getContents();
-                file_put_contents(storage_path('storage/drift_tokens.json'), $response_data);
+                file_put_contents(storage_path('drift_tokens.json'), $response_data);
             }
      
             return true;
