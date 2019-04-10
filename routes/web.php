@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 use Intercom\IntercomClient;
 use GuzzleHttp\Client;
 use Mockery\CountValidator\Exception;
@@ -46,7 +46,7 @@ $router->get('/drift', function(Request $request) use($router) {
         'form_params' => [
             'client_id' => 'acjCMiayzuPbzNZgt5DkYDKjcm44ZJq1',
             'client_secret' => 'i17bfZv9xw7SG2buXfFhQGJw5DHT5qaJ',
-            'code' => $request->query->get('code'),
+            'code' => $request->get('code'),
             'grant_type' => 'authorization_code',
         ]
     ]);
