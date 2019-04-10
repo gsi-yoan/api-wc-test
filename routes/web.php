@@ -21,7 +21,6 @@ $router->get('/', function () use ($router) {
 
 
 $router->post('/webhook', function(Request $request) use($router) { 
-    print_r($request->request->all());
 
     $client = new Intercom\IntercomClient(env('INTERCOM_TOKEN'));
     /**
@@ -58,7 +57,8 @@ $callback = function(Request $request) use($router) {
         putenv('DRIFT_EXPIRES_IN', $response_data['expires_in']);
         putenv('DRIFT_EXPIRES_IN', $response_data['expires_in']);
     }
+    return $response_data;
 };
 
-$router->get('/drift-callback', $callback);
-$router->get('/drift-callback', $callback);
+$router->get('/drift', $callback);
+$router->post('/drift', $callback);
