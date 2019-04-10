@@ -60,10 +60,8 @@ $router->group(['prefix' => '/drift'], function () use ($router) {
                 file_put_contents(storage_path('drift_tokens.json'), $response_data);
             }
      
-            return true;
         } catch (Exception $ex) {
             print_r($ex);
-            return false;
         }
     });
 });
