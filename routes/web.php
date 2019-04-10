@@ -2,6 +2,7 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Intercom\IntercomClient;
+use GuzzleHttp\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,28 @@ $router->post('/webhook', function(Request $request) use($router) {
         "type" => "user",
         "message_type" => "comment"
     ]);
+});
+
+
+$router->get('/drift-callback', function(Request $request) use($router) { 
+    //Verify head e9DhvzkPQsM1cQ6yZbGJ6IZDaCb7QgKZ
+    $client = new Client();
+
+    $res = $client->request('POST', 'https://driftapi.com/oauth2/token', [
+        'form_params' => [
+            'client_id' => 'acjCMiayzuPbzNZgt5DkYDKjcm44ZJq1',
+            'client_secret' => 'i17bfZv9xw7SG2buXfFhQGJw5DHT5qaJ',
+            'code' => $request->query->get('code'),
+            'grant_type' => 'authorization_code',
+        ]
+    ]);
+
+    if ($res->getStatusCode() == 200) { // 200 OK
+        $response_data = $res->getBody()->getContents();
+        putenv('DRIFT_REFRESH_TOKEN', $response_data['refresh_token']);
+        putenv('DRIFT_ACCESS_TOKEN', $response_data['access_token']);
+        putenv('DRIFT_TOKEN_TYPE', $response_data['token_type']);
+        putenv('DRIFT_EXPIRES_IN', $response_data['expires_in']);
+        putenv('DRIFT_EXPIRES_IN', $response_data['expires_in']);
+    }
 });
