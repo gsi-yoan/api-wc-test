@@ -83,7 +83,7 @@ $router->post('/drift', function(Request $request) use($router) {
         if ($res->getStatusCode() == 200) { // 200 OK
             $response_data = $res->getBody()->getContents();
             if(!is_array($response_data)) {
-                $response_data = json_decode($response_data);
+                $response_data = json_decode($response_data, true);
             }
             putenv('DRIFT_REFRESH_TOKEN', $response_data['refresh_token']);
             putenv('DRIFT_ACCESS_TOKEN', $response_data['access_token']);
