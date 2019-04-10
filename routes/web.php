@@ -21,28 +21,32 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->post('/drift/webhook', function(Request $request) use($router) { 
 
-    $client = new Intercom\IntercomClient(env('INTERCOM_TOKEN'));
-    /**
-     * Reply to a user's last conversation
-     * See more options here: https://developers.intercom.com/reference#replying-to-users-last-conversation
-     */
 
-    $client->conversations->replyToLastConversation([
-        "email" => "test@example.com",
-        "body" => "Thanks :)",
-        "type" => "user",
-        "message_type" => "comment"
-    ]);
-});
+$router->group(['prefix' => 'drift'], function () use ($router) {
 
-$router->get('/drift/callback', function(Request $request) use($router) { 
-    try {
-        //Verify head e9DhvzkPQsM1cQ6yZbGJ6IZDaCb7QgKZ
-        $client = new Client();
+    $router->post('webhook', function(Request $request) use($router) { 
 
-        $res = $client->request('POST', 'https://driftapi.com/oauth2/token', [
+        $client = new Intercom\IntercomClient(env('INTERCOM_TOKEN'));
+        /**
+         * Reply to a user's last conversation
+         * See more options here: https://developers.intercom.com/reference#replying-to-users-last-conversation
+         */
+    
+        $client->conversations->replyToLastConversation([
+            "email" => "test@example.com",
+            "body" => "Thanks :)",
+            "type" => "user",
+            "message_type" => "comment"
+        ]);
+    });
+
+    $router->get('callback', function (Request $request) use ($router) {
+        try {
+            //Verify head e9DhvzkPQsM1cQ6yZbGJ6IZDaCb7QgKZ
+            $client = new Client();
+
+            $res = $client->request('POST', 'https://driftapi.com/oauth2/token', [
             'form_params' => [
                 'client_id' => 'acjCMiayzuPbzNZgt5DkYDKjcm44ZJq1',
                 'client_secret' => 'i17bfZv9xw7SG2buXfFhQGJw5DHT5qaJ',
@@ -51,15 +55,15 @@ $router->get('/drift/callback', function(Request $request) use($router) {
             ]
         ]);
 
-        if ($res->getStatusCode() == 200) { // 200 OK
-            $response_data = $res->getBody()->getContents();
-            file_put_contents(storage_path('storage/drift_tokens.json'), $response_data);    
-        }
+            if ($res->getStatusCode() == 200) { // 200 OK
+                $response_data = $res->getBody()->getContents();
+                file_put_contents(storage_path('storage/drift_tokens.json'), $response_data);
+            }
      
-        return true;
-    }
-    catch(Exception $ex){
-        print_r($ex);
-        return false;
-    }
+            return true;
+        } catch (Exception $ex) {
+            print_r($ex);
+            return false;
+        }
+    });
 });
