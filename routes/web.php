@@ -41,7 +41,7 @@ $router->group(['prefix' => '/drift'], function () use ($router) {
         ]);
     });
 
-    $router->get('/callback', function (Request $request) use ($router) {
+    $router->get('/auth', function (Request $request) use ($router) {
         try {
             //Verify head e9DhvzkPQsM1cQ6yZbGJ6IZDaCb7QgKZ
             $client = new Client();
