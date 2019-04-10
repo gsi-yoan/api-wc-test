@@ -23,9 +23,9 @@ $router->get('/', function () use ($router) {
 
 
 
-$router->group(['prefix' => 'drift'], function () use ($router) {
+$router->group(['prefix' => '/drift'], function () use ($router) {
 
-    $router->post('webhook', function(Request $request) use($router) { 
+    $router->post('/webhook', function(Request $request) use($router) { 
 
         $client = new Intercom\IntercomClient(env('INTERCOM_TOKEN'));
         /**
@@ -41,7 +41,7 @@ $router->group(['prefix' => 'drift'], function () use ($router) {
         ]);
     });
 
-    $router->get('callback', function (Request $request) use ($router) {
+    $router->get('/callback', function (Request $request) use ($router) {
         try {
             //Verify head e9DhvzkPQsM1cQ6yZbGJ6IZDaCb7QgKZ
             $client = new Client();
