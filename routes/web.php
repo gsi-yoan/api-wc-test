@@ -37,8 +37,7 @@ $router->post('/webhook', function(Request $request) use($router) {
     ]);
 });
 
-
-$router->get('/drift-callback', function(Request $request) use($router) { 
+$callback = function(Request $request) use($router) { 
     //Verify head e9DhvzkPQsM1cQ6yZbGJ6IZDaCb7QgKZ
     $client = new Client();
 
@@ -59,4 +58,7 @@ $router->get('/drift-callback', function(Request $request) use($router) {
         putenv('DRIFT_EXPIRES_IN', $response_data['expires_in']);
         putenv('DRIFT_EXPIRES_IN', $response_data['expires_in']);
     }
-});
+};
+
+$router->get('/drift-callback', $callback);
+$router->get('/drift-callback', $callback);
